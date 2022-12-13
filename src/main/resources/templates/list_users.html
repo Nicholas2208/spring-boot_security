@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="UTF-8">
+    <title>Управление Пользователями</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+</head>
+<body>
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li sec:authorize="isAuthenticated()"><a th:href="@{/logout}">Logout</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<br/>
+<br/>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h1> Пользователи </h1>
+            <a th:href="@{/admin/new}">Добавить пользователя</a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Имя</th>
+                    <th>Фамилия</th>
+                    <th>Email</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="user : ${allUsers}">
+                    <td th:text="${user.getFirstName()}"/>
+                    <td th:text="${user.getLastName()}"/>
+                    <td th:text="${user.getEmail()}"/>
+                    <td>
+                        <a th:href="@{'/admin/edit/' + ${user.id}}">Редактировать</a>
+                        &nbsp;&nbsp;&nbsp;
+                        <a th:href="@{'/admin/delete/' + ${user.id}}">Удалить</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>
