@@ -23,6 +23,9 @@ public class User implements UserDetails {
     @Column(name = "last_name")
     private String lastName;
 
+    @Column(name = "age")
+    private Byte age;
+
     @Column(name = "email")
     private String email;
 
@@ -47,11 +50,13 @@ public class User implements UserDetails {
 
     public User(String firstName,
                 String lastName,
+                Byte age,
                 String email,
                 String password,
                 Set<Role> roles) {
         this.firstName = firstName;
         this.lastName = lastName;
+        this.age = age;
         this.email = email;
         this.password = password;
         this.roles = roles;
@@ -81,6 +86,14 @@ public class User implements UserDetails {
         this.lastName = lastName;
     }
 
+    public Byte getAge() {
+        return age;
+    }
+
+    public void setAge(Byte age) {
+        this.age = age;
+    }
+
     public String getEmail() {
         return email;
     }
@@ -95,6 +108,10 @@ public class User implements UserDetails {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public void addRoles(Set<Role> roles) {
+        this.roles.addAll(roles);
     }
 
     @Override
@@ -154,5 +171,18 @@ public class User implements UserDetails {
     @Override
     public int hashCode() {
         return Objects.hash(id, firstName, lastName, email, password, roles);
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", age=" + age +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", roles=" + roles +
+                '}';
     }
 }

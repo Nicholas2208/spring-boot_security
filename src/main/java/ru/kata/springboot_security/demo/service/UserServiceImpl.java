@@ -68,4 +68,22 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
         return user.get();
     }
+
+    public boolean isEmailUnique(Long id, String email) {
+        Optional<User> userByEmail = userRepository.findByEmail(email);
+
+        if (!userByEmail.isPresent()) return true;
+
+        boolean isCreatingNew = (id == null);
+
+        if (isCreatingNew) {
+            if (userByEmail.isPresent()) return false;
+        } else {
+            if (userByEmail.get().getId() == id) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 }
