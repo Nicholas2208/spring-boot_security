@@ -39,6 +39,21 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public void update(long id, User user) {
+        if (user.getPassword().length() == 0) {
+            User userFromDb = userRepository.findById(user.getId()).get();
+            user.setPassword(userFromDb.getPassword());
+        } else {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+        }
+
+        if (user.getRoles() == null) {
+            User userFromDb = userRepository.findById(user.getId()).get();
+            user.setRoles(userFromDb.getRoles());
+        } else {
+            User userFromDb = userRepository.findById(user.getId()).get();
+            user.addRoles(userFromDb.getRoles());
+        }
+
         userRepository.save(user);
     }
 
@@ -69,21 +84,4 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return user.get();
     }
 
-    public boolean isEmailUnique(Long id, String email) {
-        Optional<User> userByEmail = userRepository.findByEmail(email);
-
-        if (!userByEmail.isPresent()) return true;
-
-        boolean isCreatingNew = (id == null);
-
-        if (isCreatingNew) {
-            if (userByEmail.isPresent()) return false;
-        } else {
-            if (userByEmail.get().getId() == id) {
-                return false;
-            }
-        }
-
-        return true;
-    }
 }
